@@ -1,9 +1,9 @@
-import 'package:checklist_app/theme/colors/check_box_color_theme.dart';
+import 'package:checklist_app/theme/colors/checklist_color_theme.dart';
 import 'package:flutter/material.dart';
 
-class CheckBoxTheme {
+class ChecklistTheme {
   static ThemeData get(Brightness mode) {
-    final colorTheme = CheckBoxColorTheme.light();
+    final colorTheme = ChecklistColorTheme.light();
 
     return ThemeData(
       useMaterial3: false,
@@ -27,19 +27,8 @@ class CheckBoxTheme {
         brightness: Brightness.light,
         surface: colorTheme.backgroundPrimary,
       ),
-      checkboxTheme: CheckboxThemeData(
-        fillColor: WidgetStateProperty.resolveWith((states) {
-          if (states.contains(WidgetState.selected)) {
-            return colorTheme.primary;
-          }
-          return colorTheme.secondary;
-        }),
-        side: BorderSide(color: colorTheme.foregroundPrimary),
-      ),
-      navigationBarTheme: NavigationBarThemeData(
-        backgroundColor: colorTheme.backgroundPrimary,
-        indicatorColor: Colors.transparent,
-      ),
+
+   
       extensions: <ThemeExtension<dynamic>>[colorTheme],
     );
   }

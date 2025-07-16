@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 @immutable
-class CheckBoxColor extends Color implements WidgetStateProperty<Color> {
-  const CheckBoxColor(
+class ChecklistColor extends Color implements WidgetStateProperty<Color> {
+  const ChecklistColor(
     super.value, {
     Color? light,
     Color? dark,
@@ -39,7 +39,7 @@ class CheckBoxColor extends Color implements WidgetStateProperty<Color> {
 
   @override
   bool operator ==(Object other) =>
-      other is CheckBoxColor &&
+      other is ChecklistColor &&
       value == other.value &&
       _light == other._light &&
       _dark == other._dark &&
@@ -63,9 +63,9 @@ class CheckBoxColor extends Color implements WidgetStateProperty<Color> {
   }
 }
 
-extension CheckBoxColorExtensions on CheckBoxColor {
-  CheckBoxColor lerp(CheckBoxColor? other, double t) {
-    return CheckBoxColor(
+extension ChecklistColorExtensions on ChecklistColor {
+  ChecklistColor lerp(ChecklistColor? other, double t) {
+    return ChecklistColor(
       Color.lerp(this, other, t)!.value,
       light: Color.lerp(_light, other?._light, t),
       dark: Color.lerp(_dark, other?._dark, t),

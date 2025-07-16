@@ -1,11 +1,11 @@
-import 'package:checklist_app/theme/colors/check_box_color.dart';
+import 'package:checklist_app/theme/colors/checklist_color.dart';
 import 'package:flutter/material.dart';
 
 const _halfT = 0.5;
 
 @immutable
-class CheckboxColorThemeExtension extends ThemeExtension<CheckboxColorThemeExtension> {
-  const CheckboxColorThemeExtension({
+class ChecklistColorThemeExtension extends ThemeExtension<ChecklistColorThemeExtension> {
+  const ChecklistColorThemeExtension({
     required this.barChartColor,
     required this.brightness,
     required this.primary,
@@ -21,19 +21,19 @@ class CheckboxColorThemeExtension extends ThemeExtension<CheckboxColorThemeExten
 
   final Brightness brightness;
 
-  final CheckBoxColor primary;
-  final CheckBoxColor secondary;
-  final CheckBoxColor tertiary;
+  final ChecklistColor primary;
+  final ChecklistColor secondary;
+  final ChecklistColor tertiary;
 
-  final CheckBoxColor foregroundPrimary;
-  final CheckBoxColor foregroundSecondary;
-  final CheckBoxColor foregroundTertiary;
+  final ChecklistColor foregroundPrimary;
+  final ChecklistColor foregroundSecondary;
+  final ChecklistColor foregroundTertiary;
 
-  final CheckBoxColor backgroundPrimary;
-  final CheckBoxColor backgroundSecondary;
-  final CheckBoxColor backgroundTertiary;
+  final ChecklistColor backgroundPrimary;
+  final ChecklistColor backgroundSecondary;
+  final ChecklistColor backgroundTertiary;
 
-  final CheckBoxColor barChartColor;
+  final ChecklistColor barChartColor;
 
   @override
   int get hashCode => Object.hash(
@@ -51,7 +51,7 @@ class CheckboxColorThemeExtension extends ThemeExtension<CheckboxColorThemeExten
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is CheckboxColorThemeExtension &&
+      other is ChecklistColorThemeExtension &&
           runtimeType == other.runtimeType &&
           primary == other.primary &&
           secondary == other.secondary &&
@@ -64,11 +64,11 @@ class CheckboxColorThemeExtension extends ThemeExtension<CheckboxColorThemeExten
           backgroundTertiary == other.backgroundTertiary;
 
   @override
-  CheckboxColorThemeExtension copyWith({
-    CheckBoxColor? primary,
-    CheckBoxColor? secondary,
+  ChecklistColorThemeExtension copyWith({
+    ChecklistColor? primary,
+    ChecklistColor? secondary,
   }) {
-    return CheckboxColorThemeExtension(
+    return ChecklistColorThemeExtension(
       barChartColor: barChartColor,
       brightness: brightness,
       primary: primary ?? this.primary,
@@ -84,15 +84,15 @@ class CheckboxColorThemeExtension extends ThemeExtension<CheckboxColorThemeExten
   }
 
   @override
-  ThemeExtension<CheckboxColorThemeExtension> lerp(
-    covariant ThemeExtension<CheckboxColorThemeExtension>? other,
+  ThemeExtension<ChecklistColorThemeExtension> lerp(
+    covariant ThemeExtension<ChecklistColorThemeExtension>? other,
     double t,
   ) {
-    if (other is! CheckboxColorThemeExtension) {
+    if (other is! ChecklistColorThemeExtension) {
       return this;
     }
 
-    return CheckboxColorThemeExtension(
+    return ChecklistColorThemeExtension(
       brightness: t < _halfT ? brightness : other.brightness,
       primary: primary.lerp(other.primary, t),
       secondary: secondary.lerp(other.secondary, t),
@@ -107,7 +107,7 @@ class CheckboxColorThemeExtension extends ThemeExtension<CheckboxColorThemeExten
     );
   }
 
-  static CheckboxColorThemeExtension of(BuildContext context) {
-    return Theme.of(context).extension<CheckboxColorThemeExtension>()!;
+  static ChecklistColorThemeExtension of(BuildContext context) {
+    return Theme.of(context).extension<ChecklistColorThemeExtension>()!;
   }
 }
