@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 
-class SkipTextWidget extends StatelessWidget {
+class GradientTextWidget extends StatelessWidget {
   final Function onTap;
-  const SkipTextWidget({super.key, required this.onTap});
+  final String text;
+  const GradientTextWidget({super.key, required this.onTap, required this.text});
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +22,7 @@ class SkipTextWidget extends StatelessWidget {
         },
         blendMode: BlendMode.srcIn,
         child: Text(
-          'Skip',
+          text,
           style: TextStyle(
             fontFamily: 'Inter',
             fontSize: 15, 

@@ -51,7 +51,7 @@ class _OnboardingTabsScreenState extends State<OnboardingTabsScreen>
         elevation: 0,
         surfaceTintColor: Colors.transparent,
         backgroundColor: colors.backgroundPrimary,
-        actions: [Padding(padding: const EdgeInsets.only(right: 24), child: SkipTextWidget(
+        actions: [Padding(padding: const EdgeInsets.only(right: 24), child: GradientTextWidget(text: 'skip',
           onTap: () => context.router.replace(MainMenuRoute()),
         ))],
       ),

@@ -52,7 +52,7 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
                 ),
                 MainMenuCard(
                   cardName: 'Archive',
-                  onCardTap: () {},
+                  onCardTap: () => context.router.push(ArchiveChecklistRoute()),
                   iconAssetLocalPath: 'assets/images/archive.png',
                 ),
                 MainMenuCard(
@@ -92,7 +92,7 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
                   itemImageAssets: 'assets/images/template.png',
                 ),
                 MainMenuBottomNavItem(
-                  onItemTap: () {},
+                  onItemTap: () => context.router.push(ArchiveChecklistRoute()),
                   itemName: 'Archive',
                   itemImageAssets: 'assets/images/archive.png',
                 ),

@@ -11,7 +11,7 @@ class ActiveInactiveCircle extends StatelessWidget {
     required this.active,
     this.radius = 16.0,
     this.inactiveColor = const Color(0xFF8B8B9E),
-    this.activeGradientColors = const [Color(0xFFE8D228), Color(0xFF822D16)],
+    this.activeGradientColors = const [Color(0xFFE8D228), Color(0xFF822D16), Color(0xFFE8D228), Color(0xFF822D16)],
   });
 
   @override

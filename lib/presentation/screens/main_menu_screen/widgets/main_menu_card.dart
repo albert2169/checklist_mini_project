@@ -16,17 +16,17 @@ class MainMenuCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final colors = ChecklistColorTheme.of(context);
 
-    return Container(
-      height: 52,
-      margin: EdgeInsets.only(top: 16),
-      decoration: BoxDecoration(
-        color: colors.backgroundSecondary,
-        borderRadius: BorderRadius.circular(15),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: GestureDetector(
-          onTap: () => onCardTap(),
+    return GestureDetector(
+      onTap: () => onCardTap(),
+      child: Container(
+        height: 52,
+        margin: EdgeInsets.only(top: 16),
+        decoration: BoxDecoration(
+          color: colors.backgroundSecondary,
+          borderRadius: BorderRadius.circular(15),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(16),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [

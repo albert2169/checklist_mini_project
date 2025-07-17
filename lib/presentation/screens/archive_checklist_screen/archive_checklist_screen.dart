@@ -7,26 +7,25 @@ import 'package:checklist_app/presentation/custom/custom_widgets.dart/custom_loa
 import 'package:checklist_app/presentation/custom/custom_widgets.dart/empty_content_widget.dart';
 import 'package:checklist_app/presentation/custom/custom_widgets.dart/gradient_line.dart';
 import 'package:checklist_app/presentation/custom/enums/load_state.dart';
-import 'package:checklist_app/presentation/router/app_router.gr.dart';
 import 'package:checklist_app/presentation/custom/custom_widgets.dart/custom_button.dart';
-import 'package:checklist_app/presentation/screens/active_checklists_screen/widgets/checklist_item_card.dart';
+import 'package:checklist_app/presentation/screens/archive_checklist_screen/widgets/archive_checklist_item_card.dart';
 import 'package:checklist_app/theme/colors/checklist_color_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 @RoutePage()
-class ActiveChecklistsScreen extends StatefulWidget {
-  const ActiveChecklistsScreen({super.key});
+class ArchiveChecklistScreen extends StatefulWidget {
+  const ArchiveChecklistScreen({super.key});
 
   @override
-  State<ActiveChecklistsScreen> createState() => _ActiveChecklistsScreenState();
+  State<ArchiveChecklistScreen> createState() => _ArchiveChecklistScreenState();
 }
 
-class _ActiveChecklistsScreenState extends State<ActiveChecklistsScreen> {
+class _ArchiveChecklistScreenState extends State<ArchiveChecklistScreen> {
   @override
   void initState() {
     super.initState();
-    context.read<ChecklistBloc>().add(FetchChecklistEvent());
+    context.read<ChecklistBloc>().add(FetchArchiveChecklistEvent());
   }
 
   @override
@@ -41,11 +40,10 @@ class _ActiveChecklistsScreenState extends State<ActiveChecklistsScreen> {
           onTap: () => context.router.pop(),
           child: Image.asset('assets/images/app_bar_arrow_back.png'),
         ),
-        title: Text('Active Checklists', style: TextStyle(color: colors.primary)),
+        title: Text('Archive', style: TextStyle(color: colors.primary)),
         elevation: 0,
         surfaceTintColor: Colors.transparent,
         backgroundColor: colors.backgroundPrimary,
-        actions: [Image.asset('assets/images/sun.png')],
       ),
       body: Column(
         children: [
@@ -58,17 +56,17 @@ class _ActiveChecklistsScreenState extends State<ActiveChecklistsScreen> {
                   case LoadState.error:
                     return CustomErrorWidget(errorMsg: state.errorMsg);
                   case LoadState.loaded:
-                    final activeChecklists = [...state.activeChecklists];
-                    if (activeChecklists.isEmpty) {
-                      return EmptyContentWidget(emptyText: 'Your active checklists are empty');
+                    final archiveCheckllists = [...state.archivedChecklists];
+                    if (archiveCheckllists.isEmpty) {
+                      return EmptyContentWidget(emptyText: 'Your Archived checklists are empty');
                     }
                     return Padding(
                       padding: const EdgeInsets.only(top: 40, left: 16, right: 16),
                       child: ListView.builder(
-                        itemCount: activeChecklists.length,
+                        itemCount: archiveCheckllists.length,
                         itemBuilder: (_, index) {
-                          return ChecklistItemCard(
-                            checklist: activeChecklists[index],
+                          return ArchiveChecklistItemCard(
+                            checklist: archiveCheckllists[index],
                             onCardTap: (p0) {},
                           );
                         },
@@ -84,21 +82,7 @@ class _ActiveChecklistsScreenState extends State<ActiveChecklistsScreen> {
       bottomNavigationBar: Container(
         width: double.infinity,
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 17),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            CustomButton(onTap: () => context.router.push(CreateNewChecklistRoute()), name: 'New\nChecklist', height: 62),
-            CustomButton(
-              height: 62,
-              onTap: () {
-                context.router.push(ArchiveChecklistRoute());
-              },
-              name: 'Archive',
-            ),
-            CustomButton(onTap: () {}, name: 'Templates', height: 62),
-            CustomButton(onTap: () {}, name: 'Settings', height: 62),
-          ],
-        ),
+        child: CustomButton(name: 'Clear All', onTap: () => context.read<ChecklistBloc>().add(RemoveAllArchivedChecklistEvent()), height: 43),
       ),
     );
   }
