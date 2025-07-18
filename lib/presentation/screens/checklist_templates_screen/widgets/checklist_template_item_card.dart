@@ -31,7 +31,6 @@ class ChecklistTemplateItemCard extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(bottom: 12),
       child: SizedBox(
-        height: 200 + borderWidth * 2,
         child: Stack(
           children: [
             Positioned.fill(
@@ -55,7 +54,6 @@ class ChecklistTemplateItemCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(
-                    height: 46,
                     child: Padding(
                       padding: const EdgeInsets.symmetric(vertical: 13),
                       child: Text(
@@ -69,7 +67,6 @@ class ChecklistTemplateItemCard extends StatelessWidget {
                     ),
                   ),
                   SizedBox(
-                    height: 46,
                     child: Padding(
                       padding: const EdgeInsets.symmetric(vertical: 13),
                       child: Text(

@@ -16,5 +16,6 @@ class AppRouter extends RootStackRouter {
     AutoRoute(page: CreateNewChecklistRoute.page),
     AutoRoute(page: ActiveChecklistViewRoute.page),
     AutoRoute(page: ChecklistTemplatesRoute.page),
+    AutoRoute(page: SettingsRoute.page),
   ];
 }

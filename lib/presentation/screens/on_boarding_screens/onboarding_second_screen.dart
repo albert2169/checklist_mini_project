@@ -11,6 +11,7 @@ class OnboardingSecondScreen extends StatelessWidget {
     final colors = ChecklistColorTheme.of(context);
 
     return Scaffold(
+      backgroundColor: colors.backgroundPrimary,
       body: Padding(
         padding: EdgeInsets.symmetric(vertical: 24, horizontal: 24),
         child: Column(
@@ -30,7 +31,7 @@ class OnboardingSecondScreen extends StatelessWidget {
                       fontWeight: FontWeight.w600,
                     ),
                   ),
-                  const SizedBox(height: 16,),
+                  const SizedBox(height: 16),
                   Text(
                     'Use templates and switch themes',
                     textAlign: TextAlign.center,

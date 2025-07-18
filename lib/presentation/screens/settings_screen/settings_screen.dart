@@ -1,42 +1,40 @@
-import 'dart:ui';
-
 import 'package:auto_route/auto_route.dart';
 import 'package:checklist_app/presentation/checklist_state/checklist_bloc.dart';
 import 'package:checklist_app/presentation/checklist_state/checklist_event.dart';
-import 'package:checklist_app/presentation/checklist_state/checklist_state.dart';
 import 'package:checklist_app/presentation/custom/custom_widgets.dart/custom_button.dart';
-import 'package:checklist_app/presentation/custom/custom_widgets.dart/custom_dialog_widget.dart';
-import 'package:checklist_app/presentation/custom/custom_widgets.dart/custom_error_widget.dart';
-import 'package:checklist_app/presentation/custom/custom_widgets.dart/custom_loading_widget.dart';
+import 'package:checklist_app/presentation/custom/custom_widgets.dart/custom_container_text.dart';
 import 'package:checklist_app/presentation/custom/custom_widgets.dart/gradient_line.dart';
-import 'package:checklist_app/presentation/custom/enums/load_state.dart';
-import 'package:checklist_app/presentation/router/app_router.gr.dart';
-import 'package:checklist_app/presentation/screens/checklist_templates_screen/widgets/checklist_template_item_card.dart';
-import 'package:checklist_app/presentation/screens/create_new_checklist_screen/widgets/add_checklist_name_text_field.dart';
 import 'package:checklist_app/theme/colors/checklist_color_theme.dart';
+import 'package:checklist_app/theme/theme_notifier.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:provider/provider.dart';
 
 @RoutePage()
 class SettingsScreen extends StatefulWidget {
-  const SettingsScreen({super.key,});
+  const SettingsScreen({super.key});
 
   @override
   State<SettingsScreen> createState() => _SettingsScreenState();
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
-  final _checkListTamleteSearchTextEditingController = TextEditingController();
-
+  late bool _isDark;
+  late bool _isInitialDark;
   @override
   void initState() {
     super.initState();
+
+    // Safe access to context-dependent objects after first build
+    _isDark = Provider.of<ChecklistThemeProvider>(context, listen: false).isDarkMode;
+    _isInitialDark = _isDark;
+
     context.read<ChecklistBloc>().add(FetchChecklistTemplatesEvent());
   }
 
   @override
   Widget build(BuildContext context) {
     final colors = ChecklistColorTheme.of(context);
+    final themeProvider = Provider.of<ChecklistThemeProvider>(context);
 
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
@@ -48,43 +46,121 @@ class _SettingsScreenState extends State<SettingsScreen> {
             onTap: () => context.router.pop(),
             child: Image.asset('assets/images/app_bar_arrow_back.png'),
           ),
-          title: Text('Templates', style: TextStyle(color: colors.primary)),
+          title: Text('Settings', style: TextStyle(color: colors.primary)),
           elevation: 0,
           surfaceTintColor: Colors.transparent,
           backgroundColor: colors.backgroundPrimary,
         ),
-        body: BlocBuilder<ChecklistBloc, ChecklistState>(
-          builder: (context, state) {
-            switch (state.loadState) {
-              case LoadState.loading:
-                return CustomLoadingWidget();
-              case LoadState.error:
-                return CustomErrorWidget(errorMsg: state.errorMsg);
-              case LoadState.loaded:
-                return Padding(
-                  padding: const EdgeInsets.only(left: 16, right: 16, top: 16),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      AddChecklistNameTextField(
-                        controller: _checkListTamleteSearchTextEditingController,
-                        hintTexts: 'Search templates...',
+        body: Padding(
+          padding: const EdgeInsets.only(left: 16, right: 16, top: 16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Theme',
+                      style: TextStyle(
+                        color: colors.primary,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
                       ),
-                      const SizedBox(height: 16),
-                      Expanded(
-                        child: ListView(
-                          children: [
-                            for (final checklist in state.templates)
-                              ChecklistTemplateItemCard(checklist: checklist),
-                          ],
-                        ),
+                    ),
+                    const SizedBox(height: 23),
+                    Text(
+                      'Switch between light and dark themes',
+                      style: TextStyle(
+                        color: colors.secondary,
+                        fontSize: 13,
+                        fontWeight: FontWeight.w400,
                       ),
-                      GradientLine(lineWidth: double.infinity),
-                    ],
-                  ),
-                );
-            }
-          },
+                    ),
+                    SizedBox(height: 16),
+                    SizedBox(
+                      width: double.infinity,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Expanded(
+                            child: CustomContainerText(
+                              isActive: _isDark,
+                              onTap: () {
+                                if (!_isDark) {
+                                  setState(() {
+                                    _isDark = !_isDark;
+                                  });
+                                }
+                              },
+                              height: 41,
+                              text: 'Dark',
+                              textStyle: TextStyle(
+                                color: colors.secondary,
+                                fontSize: 15,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 8),
+                          Expanded(
+                            child: CustomContainerText(
+                              isActive: !_isDark,
+                              onTap: () {
+                                if (_isDark) {
+                                  setState(() {
+                                    _isDark = !_isDark;
+                                  });
+                                }
+                              },
+                              height: 41,
+                              text: 'Light',
+                              textStyle: TextStyle(
+                                color: colors.secondary,
+                                fontSize: 15,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: 16),
+                    CustomContainerText(
+                      isActive: false,
+                      onTap: null,
+                      height: 114,
+                      text: 'Preview Text',
+                      textStyle: TextStyle(
+                        color: colors.primary,
+                        fontSize: 15,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                    SizedBox(height: 16),
+                    CustomContainerText(
+                      onTap: () {
+                          if (!_isDark) {
+                            setState(() {
+                                _isDark = true;
+                            });
+                          }
+                      },
+                      isActive: false,
+                      height: 43,
+                      text: 'Reset to Default',
+                      textStyle: TextStyle(
+                        color: colors.primary,
+                        fontSize: 15,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              GradientLine(lineWidth: double.infinity),
+            ],
+          ),
         ),
         bottomNavigationBar: Container(
           width: double.infinity,
@@ -92,49 +168,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
           child: SizedBox(
             width: 163,
             child: CustomButton(
-              name: 'Create Custom',
-              onTap: () => context.router.push(CreateNewChecklistRoute(isForCustomTemplate: true)),
+              name: 'Apply',
+              onTap: () {
+                if (_isInitialDark == _isDark) {
+                  return;
+                }
+                themeProvider.toggleTheme();
+              },
               height: 43,
             ),
           ),
         ),
       ),
-    );
-  }
-
-  void _showDialog(final String title) {
-    showGeneralDialog(
-      context: context,
-      barrierLabel: "Dialog",
-      barrierDismissible: true,
-      barrierColor: Colors.black.withOpacity(0.3),
-      transitionDuration: const Duration(milliseconds: 200),
-      pageBuilder: (context, anim1, anim2) {
-        Future.delayed(const Duration(seconds: 2), () {
-          if (Navigator.of(context).canPop()) {
-            Navigator.of(context).pop();
-          }
-        });
-
-        return BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
-          child: GestureDetector(
-            onTap: () => Navigator.of(context).pop(),
-            child: Material(
-              type: MaterialType.transparency,
-              child: Center(
-                child: CustomDialogWidget(title: title, actions: []),
-              ),
-            ),
-          ),
-        );
-      },
-      transitionBuilder: (context, anim1, anim2, child) {
-        return FadeTransition(
-          opacity: CurvedAnimation(parent: anim1, curve: Curves.easeOut),
-          child: child,
-        );
-      },
     );
   }
 }

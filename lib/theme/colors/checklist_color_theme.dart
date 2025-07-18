@@ -6,17 +6,20 @@ import 'package:flutter/material.dart';
 abstract class ChecklistColorTheme {
   static ChecklistColorThemeExtension light() {
     return ChecklistColorThemeExtension(
-      barChartColor: ChecklistColor(ChecklistColorPalette.backgroundDarkColor.value),
+      barChartColor: ChecklistColor(ChecklistColorPalette.primaryLightColor.value),
       brightness: Brightness.light,
-      primary: ChecklistColor(ChecklistColorPalette.whiteColor.value),
+
+      primary: ChecklistColor(ChecklistColorPalette.primaryLightColor.value),
       secondary: ChecklistColor(ChecklistColorPalette.backgroundGreyColor.value),
-      tertiary: ChecklistColor(ChecklistColorPalette.backgroundDarkColor.value),
-      foregroundPrimary: ChecklistColor(ChecklistColorPalette.backgroundDarkColor.value),
-      foregroundSecondary: ChecklistColor(ChecklistColorPalette.backgroundDarkColor.value),
-      foregroundTertiary: ChecklistColor(ChecklistColorPalette.backgroundDarkColor.value),
-      backgroundPrimary: ChecklistColor(ChecklistColorPalette.backgroundDarkColor.value),
-      backgroundSecondary: ChecklistColor(ChecklistColorPalette.backgroundAppBarDarkColor.value),
-      backgroundTertiary: ChecklistColor(ChecklistColorPalette.backgroundDarkColor.value),
+      tertiary: ChecklistColor(ChecklistColorPalette.accentLightColor.value),
+
+      foregroundPrimary: ChecklistColor(ChecklistColorPalette.textPrimaryLightColor.value),
+      foregroundSecondary: ChecklistColor(ChecklistColorPalette.textSecondaryLightColor.value),
+      foregroundTertiary: ChecklistColor(ChecklistColorPalette.textDisabledLightColor.value),
+
+      backgroundPrimary: ChecklistColor(ChecklistColorPalette.backgroundLighColor.value),
+      backgroundSecondary: ChecklistColor(ChecklistColorPalette.backgroundLightGreyColor.value),
+      backgroundTertiary: ChecklistColor(ChecklistColorPalette.backgroundLightAccentColor.value),
     );
   }
 

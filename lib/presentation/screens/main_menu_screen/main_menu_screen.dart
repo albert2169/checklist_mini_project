@@ -57,7 +57,7 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
                 ),
                 MainMenuCard(
                   cardName: 'Settings',
-                  onCardTap: () {},
+                  onCardTap: () => context.router.push(SettingsRoute()),
                   iconAssetLocalPath: 'assets/images/settings.png',
                 ),
                 MainMenuCard(
@@ -97,7 +97,7 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
                   itemImageAssets: 'assets/images/archive.png',
                 ),
                 MainMenuBottomNavItem(
-                  onItemTap: () {},
+                  onItemTap: () => context.router.push(SettingsRoute()),
                   itemName: 'Settings',
                   itemImageAssets: 'assets/images/settings.png',
                 ),

@@ -23,7 +23,7 @@ class ChecklistCard extends StatelessWidget {
 
     const borderWidth = 2.0;
     const borderRadius = 12.0;
-    const cardHeight = 74.0;
+    const cardHeight = 90.0;
     const gradientColors = [
       Color(0xFFE8D228),
       Color(0xFF822D16),

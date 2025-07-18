@@ -11,6 +11,7 @@ class OnboardingFirstScreen extends StatelessWidget {
     final colors = ChecklistColorTheme.of(context);
 
     return Scaffold(
+      backgroundColor: colors.backgroundPrimary,
       body: Padding(
         padding: EdgeInsets.symmetric(vertical: 24, horizontal: 24),
         child: Column(

@@ -29,7 +29,7 @@ class ArchiveChecklistItemCard extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(bottom: 12),
       child: SizedBox(
-        height: 74 + borderWidth * 2,
+        height: 90 + borderWidth * 2,
         child: Stack(
           children: [
             Positioned.fill(
