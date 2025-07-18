@@ -2,6 +2,7 @@ import 'package:checklist_app/mocked_data.dart';
 import 'package:checklist_app/presentation/checklist_state/checklist_event.dart';
 import 'package:checklist_app/presentation/checklist_state/checklist_state.dart';
 import 'package:checklist_app/presentation/custom/enums/load_state.dart';
+import 'package:checklist_app/presentation/models/checklist_view_model.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ChecklistBloc extends Bloc<ChecklistEvent, ChecklistState> {
@@ -20,6 +21,7 @@ class ChecklistBloc extends Bloc<ChecklistEvent, ChecklistState> {
     on<RemoveAllArchivedChecklistEvent>(_handleRemoveAllArchivedChecklistEvent);
     on<AddActiveChecklistToArchive>(_handleAddActiveChecklistToArchive);
     on<SaveChecklistEvent>(_handleSaveChecklistEvent);
+    on<UpdateCheckboxsEvent>(_handleUpdateCheckboxsEvent);
   }
 
   void _handleFetchChecklistEvent(FetchChecklistEvent event, Emitter<ChecklistState> emit) async {
@@ -77,8 +79,25 @@ class ChecklistBloc extends Bloc<ChecklistEvent, ChecklistState> {
     final newChecklist = event.checklist.copyWith(id: _getNextAvailableId(ids));
     activeChecklists.insert(0, newChecklist);
     emit(state.copyWith(activeChecklists: activeChecklists));
+  }
+  void _handleUpdateCheckboxsEvent(UpdateCheckboxsEvent event, Emitter<ChecklistState> emit) async {
+    final activeChecklists = [...state.activeChecklists];
 
+    ChecklistViewModel checklistUpdated = activeChecklists.where((checklist) => checklist.id == event.checklistId).first;
+    final completedItems =  event.items.where((item) {
+     return  item.isCompleted == true;
+    } ).toList();
+    final completedPercentage = completedItems.length.toDouble() / event.items.length.toDouble() * 100;
+    final isCompleted = completedItems.length == event.items.length;
+    checklistUpdated = checklistUpdated.copyWith(items: event.items, completedPercentage: completedPercentage, isCompleted: isCompleted, completedDate: isCompleted ? DateTime.now() : null);
+    final updatedList = activeChecklists.map((checklist) {
+      if (checklist.id == checklistUpdated.id) {
+          return checklistUpdated;
+      }
+      return checklist;
+    }).toList();
 
+    emit(state.copyWith(activeChecklists: updatedList));
   }
 
   int _getNextAvailableId(List<int> ids) {

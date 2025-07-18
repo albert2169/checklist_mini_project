@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 class CustomButton extends StatelessWidget {
   final String name;
   final double height;
-  final Function onTap;
+  final Function? onTap;
 
 
   const CustomButton({
@@ -19,7 +19,7 @@ class CustomButton extends StatelessWidget {
     final gradientColors = [Color(0xFFE8D228), Color(0xFF822D16), Color(0xFFE8D228), Color(0xFF822D16)];
 
     return GestureDetector(
-      onTap: () => onTap(),
+      onTap: onTap == null ? null : () => onTap!(),
       child: Container(
         height: height,
         decoration: BoxDecoration(

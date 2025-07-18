@@ -5,7 +5,7 @@ class ChecklistItemViewModel extends Equatable {
   final bool isCompleted;
   const ChecklistItemViewModel({required this.name, required this.isCompleted});
 
-  ChecklistItemViewModel copyWith(String? name, bool? isCompleted) {
+  ChecklistItemViewModel copyWith({String? name, bool? isCompleted}) {
     return ChecklistItemViewModel(
       name: name ?? this.name,
       isCompleted: isCompleted ?? this.isCompleted,

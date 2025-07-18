@@ -9,7 +9,7 @@ import 'package:checklist_app/presentation/custom/custom_widgets.dart/gradient_l
 import 'package:checklist_app/presentation/custom/enums/load_state.dart';
 import 'package:checklist_app/presentation/router/app_router.gr.dart';
 import 'package:checklist_app/presentation/custom/custom_widgets.dart/custom_button.dart';
-import 'package:checklist_app/presentation/screens/active_checklists_screen/widgets/checklist_item_card.dart';
+import 'package:checklist_app/presentation/screens/active_checklists_screen/widgets/checklist_card.dart';
 import 'package:checklist_app/theme/colors/checklist_color_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -67,9 +67,8 @@ class _ActiveChecklistsScreenState extends State<ActiveChecklistsScreen> {
                       child: ListView.builder(
                         itemCount: activeChecklists.length,
                         itemBuilder: (_, index) {
-                          return ChecklistItemCard(
+                          return ChecklistCard(
                             checklist: activeChecklists[index],
-                            onCardTap: (p0) {},
                           );
                         },
                       ),

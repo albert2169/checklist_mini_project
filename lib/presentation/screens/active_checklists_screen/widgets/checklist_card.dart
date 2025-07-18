@@ -1,19 +1,20 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:checklist_app/presentation/checklist_state/checklist_bloc.dart';
 import 'package:checklist_app/presentation/checklist_state/checklist_event.dart';
 import 'package:checklist_app/presentation/custom/custom_widgets.dart/active_inactive_rectangle.dart';
-import 'package:checklist_app/presentation/custom/custom_widgets.dart/skip_text_widget.dart';
+import 'package:checklist_app/presentation/custom/custom_widgets.dart/gradient_text_widget.dart';
 import 'package:checklist_app/presentation/models/checklist_view_model.dart';
+import 'package:checklist_app/presentation/router/app_router.gr.dart';
 import 'package:checklist_app/presentation/screens/active_checklists_screen/widgets/created_date_and_percentage.dart';
 import 'package:checklist_app/presentation/screens/active_checklists_screen/widgets/gradient_border.dart';
 import 'package:checklist_app/theme/colors/checklist_color_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class ChecklistItemCard extends StatelessWidget {
+class ChecklistCard extends StatelessWidget {
   final ChecklistViewModel checklist;
-  final Function(int) onCardTap;
 
-  const ChecklistItemCard({super.key, required this.checklist, required this.onCardTap});
+  const ChecklistCard({super.key, required this.checklist});
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +40,7 @@ class ChecklistItemCard extends StatelessWidget {
               height: 74,
               padding: const EdgeInsets.all(16),
               child: GestureDetector(
-                onTap: () => onCardTap(checklist.id),
+                onTap: () => context.router.push(ActiveChecklistViewRoute(checklist: checklist)),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [

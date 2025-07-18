@@ -1,7 +1,10 @@
+import 'dart:ui';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:checklist_app/presentation/checklist_state/checklist_bloc.dart';
 import 'package:checklist_app/presentation/checklist_state/checklist_event.dart';
 import 'package:checklist_app/presentation/custom/custom_widgets.dart/custom_button.dart';
+import 'package:checklist_app/presentation/custom/custom_widgets.dart/custom_dialog_widget.dart';
 import 'package:checklist_app/presentation/custom/custom_widgets.dart/gradient_line.dart';
 import 'package:checklist_app/presentation/models/checklist_item_view_model.dart';
 import 'package:checklist_app/presentation/models/checklist_view_model.dart';
@@ -67,6 +70,11 @@ class _CreateNewChecklistScreenState extends State<CreateNewChecklistScreen> {
               CustomButton(
                 name: 'Add Item',
                 onTap: () {
+                  if (_checklistItemTextEditingController.text.trim().isEmpty) {
+                    _showDialog('Item name cannot be empty');
+
+                    return;
+                  }
                   setState(() {
                     _checklistItems.insert(
                       _checklistItems.length - 1,
@@ -115,12 +123,15 @@ class _CreateNewChecklistScreenState extends State<CreateNewChecklistScreen> {
                 height: 43,
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 56, vertical: 12),
-                  child: Text(
-                    'Cancel',
-                    style: TextStyle(
-                      color: colors.secondary,
-                      fontSize: 15,
-                      fontWeight: FontWeight.w500,
+                  child: GestureDetector(
+                    onTap: () => context.router.pop(),
+                    child: Text(
+                      'Cancel',
+                      style: TextStyle(
+                        color: colors.secondary,
+                        fontSize: 15,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
                   ),
                 ),
@@ -130,10 +141,19 @@ class _CreateNewChecklistScreenState extends State<CreateNewChecklistScreen> {
                 child: CustomButton(
                   name: 'Save',
                   onTap: () {
+                    if (_checklistItems.length == 1) {
+                      _showDialog('Checklist Items cannot be empty');
+                      return;
+                    }
+                    if (_checkListNameTextEditingController.text.trim().isEmpty) {
+                      _showDialog('Checklist Name cannot be empty');
+                      return;
+                    }
+                    _checklistItems.removeLast();
                     context.read<ChecklistBloc>().add(
                       SaveChecklistEvent(
                         checklist: ChecklistViewModel(
-                          name: _checklistItemTextEditingController.text,
+                          name: _checkListNameTextEditingController.text,
                           items: _checklistItems,
                           completedDate: null,
                           createdAt: DateTime.now(),
@@ -145,8 +165,16 @@ class _CreateNewChecklistScreenState extends State<CreateNewChecklistScreen> {
                     );
                     _checkListNameTextEditingController.clear();
                     _checklistItemTextEditingController.clear();
+                    WidgetsBinding.instance.addPostFrameCallback((_) {
+                      Future.delayed(const Duration(seconds: 2), () {
+                        if (context.mounted) {
+                          _showDialog('Checklist Successfully Saved');
+                        }
+                      });
+                    });
                     setState(() {
                       _checklistItems = [];
+                      _checklistItems.add(ChecklistItemViewModel(name: 'name', isCompleted: false));
                     });
                   },
                   height: 43,
@@ -156,6 +184,42 @@ class _CreateNewChecklistScreenState extends State<CreateNewChecklistScreen> {
           ),
         ),
       ),
+    );
+  }
+
+  void _showDialog(final String title) {
+    showGeneralDialog(
+      context: context,
+      barrierLabel: "Dialog",
+      barrierDismissible: true,
+      barrierColor: Colors.black.withOpacity(0.3),
+      transitionDuration: const Duration(milliseconds: 200),
+      pageBuilder: (context, anim1, anim2) {
+        Future.delayed(const Duration(seconds: 2), () {
+          if (Navigator.of(context).canPop()) {
+            Navigator.of(context).pop();
+          }
+        });
+
+        return BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+          child: GestureDetector(
+            onTap: () => Navigator.of(context).pop(),
+            child: Material(
+              type: MaterialType.transparency,
+              child: Center(
+                child: CustomDialogWidget(title: title, actions: []),
+              ),
+            ),
+          ),
+        );
+      },
+      transitionBuilder: (context, anim1, anim2, child) {
+        return FadeTransition(
+          opacity: CurvedAnimation(parent: anim1, curve: Curves.easeOut),
+          child: child,
+        );
+      },
     );
   }
 }
