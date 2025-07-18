@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 class ChecklistTheme {
   static ThemeData get(Brightness mode) {
-    final colorTheme = ChecklistColorTheme.light();
+    final colorTheme = ChecklistColorTheme.dark();
 
     return ThemeData(
       useMaterial3: false,

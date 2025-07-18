@@ -13,7 +13,7 @@ class ChecklistItemCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = ChecklistColorTheme.of(context);
-    const borderWidth = 0.5;
+    const borderWidth = 2.0;
     const gradientColors = [
       Color(0xFFE8D228),
       Color(0xFF822D16),

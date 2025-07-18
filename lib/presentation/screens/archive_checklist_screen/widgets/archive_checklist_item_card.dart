@@ -16,7 +16,8 @@ class ArchiveChecklistItemCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = ChecklistColorTheme.of(context);
-    const borderWidth = 0.5;
+    const borderWidth = 2.0;
+    const borderRadius = 12.0;
     const gradientColors = [
       Color(0xFFE8D228),
       Color(0xFF822D16),
@@ -27,56 +28,65 @@ class ArchiveChecklistItemCard extends StatelessWidget {
 
     return Padding(
       padding: const EdgeInsets.only(bottom: 12),
-      child: Stack(
-        children: [
-          CustomPaint(
-            painter: GradientBorderCardPainter(
-              borderWidth: borderWidth,
-              gradientColors: gradientColors,
+      child: SizedBox(
+        height: 74 + borderWidth * 2,
+        child: Stack(
+          children: [
+            Positioned.fill(
+              child: CustomPaint(
+                painter: GradientBorderCardPainter(
+                  borderWidth: borderWidth,
+                  gradientColors: gradientColors,
+                ),
+              ),
             ),
-            child: Container(
-              height: 74,
+
+            Container(
+              margin: const EdgeInsets.all(borderWidth),
+              decoration: BoxDecoration(
+                color: colors.backgroundSecondary,
+                borderRadius: BorderRadius.circular(borderRadius),
+              ),
               padding: const EdgeInsets.all(16),
               child: GestureDetector(
                 onTap: () => onCardTap(checklist.id),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Row(
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              checklist.name,
-                              style: TextStyle(
-                                color: colors.primary,
-                                fontWeight: FontWeight.w500,
-                                fontSize: 15,
-                              ),
-                            ),
-                            const SizedBox(height: 5),
-                            Text(
-                              'Created: $formattedDate,  ${checklist.completedPercentage.round().toString()}%',
-                              style: TextStyle(
-                                fontSize: 13,
-                                fontWeight: FontWeight.w500,
-                                color: colors.secondary,
-                              ),
-                            ),
-                          ],
+                        Text(
+                          checklist.name,
+                          style: TextStyle(
+                            color: colors.primary,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 15,
+                          ),
+                        ),
+                        const SizedBox(height: 5),
+                        Text(
+                          'Completed: $formattedDate, ${checklist.completedPercentage.round()}%',
+                          style: TextStyle(
+                            fontSize: 13,
+                            fontWeight: FontWeight.w500,
+                            color: colors.secondary,
+                          ),
                         ),
                       ],
                     ),
                     GestureDetector(
-                      onTap: () => context.read<ChecklistBloc>().add(RemoveArchivedChecklistEvent(id: checklist.id)),
-                      child: Image.asset('assets/images/bin.png')),
+                      onTap: () => context.read<ChecklistBloc>().add(
+                        RemoveArchivedChecklistEvent(id: checklist.id),
+                      ),
+                      child: Image.asset('assets/images/bin.png'),
+                    ),
                   ],
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

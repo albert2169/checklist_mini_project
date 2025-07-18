@@ -1,4 +1,7 @@
 {
+
+  "dart.flutterSdkPath": ".fvm/flutter_sdk",
+
   "files.autoSave": "afterDelay",
   "files.autoSaveDelay": 1000,
   "editor.formatOnSave": true,

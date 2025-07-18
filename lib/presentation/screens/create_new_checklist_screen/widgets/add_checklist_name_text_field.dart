@@ -4,13 +4,18 @@ import 'package:flutter/material.dart';
 
 class AddChecklistNameTextField extends StatelessWidget {
   final TextEditingController controller;
-
-  const AddChecklistNameTextField({super.key, required this.controller});
+  final String? hintTexts;
+  const AddChecklistNameTextField({
+    super.key,
+    required this.controller,
+    this.hintTexts,
+  });
 
   @override
   Widget build(BuildContext context) {
     final colors = ChecklistColorTheme.of(context);
-    const borderWidth = 0.5;
+    const borderWidth = 2.0;
+    const borderRadius = 12.0;
     const gradientColors = [
       Color(0xFFE8D228),
       Color(0xFF822D16),
@@ -20,24 +25,48 @@ class AddChecklistNameTextField extends StatelessWidget {
 
     return Padding(
       padding: const EdgeInsets.only(bottom: 12),
-      child: Stack(
-        children: [
-          CustomPaint(
-            painter: GradientBorderCardPainter(
-              borderWidth: borderWidth,
-              gradientColors: gradientColors,
-            ),
-            child: Container(
-              height: 45,
-              padding: const EdgeInsets.all(16),
-              child: TextField(
-                controller: controller,
-                decoration: const InputDecoration(isCollapsed: true, border: InputBorder.none),
-                style: TextStyle(color: colors.primary, fontSize: 15, fontWeight: FontWeight.w400),
+      child: SizedBox(
+        height: 50 + borderWidth * 2,
+        child: Stack(
+          children: [
+            Positioned.fill(
+              child: CustomPaint(
+                painter: GradientBorderCardPainter(
+                  borderWidth: borderWidth,
+                  gradientColors: gradientColors,
+                ),
               ),
             ),
-          ),
-        ],
+            Container(
+              margin: const EdgeInsets.all(borderWidth),
+              decoration: BoxDecoration(
+                color: colors.backgroundSecondary,
+                borderRadius: BorderRadius.circular(borderRadius),
+              ),
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Center(
+                child: TextField(
+                  controller: controller,
+                  decoration: InputDecoration(
+                    hintStyle: TextStyle(
+                      color: colors.secondary,
+                      fontWeight: FontWeight.w400,
+                      fontSize: 15,
+                    ),
+                    hintText: hintTexts,
+                    border: InputBorder.none,
+                    isCollapsed: true,
+                  ),
+                  style: TextStyle(
+                    color: colors.primary,
+                    fontSize: 15,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

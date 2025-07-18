@@ -9,7 +9,8 @@ class ChecklistBloc extends Bloc<ChecklistEvent, ChecklistState> {
   ChecklistBloc()
     : super(
         ChecklistState(
-          activeChecklists: initialChecklists,
+          templates: initialChecklistTemplates,
+          activeChecklists: [],
           archivedChecklists: [],
           loadState: LoadState.loading,
           errorMsg: '',
@@ -22,6 +23,9 @@ class ChecklistBloc extends Bloc<ChecklistEvent, ChecklistState> {
     on<AddActiveChecklistToArchive>(_handleAddActiveChecklistToArchive);
     on<SaveChecklistEvent>(_handleSaveChecklistEvent);
     on<UpdateCheckboxsEvent>(_handleUpdateCheckboxsEvent);
+    on<FetchChecklistTemplatesEvent>(_handleFetchChecklistTemplatesEvent);
+    on<MakeTemplateChecklistEvent>(_handleMakeTemplateChecklistEvent);
+    on<CustomizeChecklistTemplateEvent>(_handleCustomizeChecklistTemplateEvent);
   }
 
   void _handleFetchChecklistEvent(FetchChecklistEvent event, Emitter<ChecklistState> emit) async {
@@ -37,6 +41,15 @@ class ChecklistBloc extends Bloc<ChecklistEvent, ChecklistState> {
     emit(state.copyWith(loadState: LoadState.loading));
     await Future.delayed(const Duration(seconds: 2));
     emit(state.copyWith(activeChecklists: state.activeChecklists, loadState: LoadState.loaded));
+  }
+
+  void _handleFetchChecklistTemplatesEvent(
+    FetchChecklistTemplatesEvent event,
+    Emitter<ChecklistState> emit,
+  ) async {
+    emit(state.copyWith(loadState: LoadState.loading));
+    await Future.delayed(const Duration(seconds: 2));
+    emit(state.copyWith(templates: state.templates, loadState: LoadState.loaded));
   }
 
   void _handleRemoveArchivedChecklistEvent(
@@ -71,6 +84,27 @@ class ChecklistBloc extends Bloc<ChecklistEvent, ChecklistState> {
     );
   }
 
+  void _handleCustomizeChecklistTemplateEvent(
+    CustomizeChecklistTemplateEvent event,
+    Emitter<ChecklistState> emit,
+  ) async {
+    final templates = [...state.templates];
+    templates.add(event.checklist);
+    emit(state.copyWith(templates: templates));
+  }
+
+  void _handleMakeTemplateChecklistEvent(
+    MakeTemplateChecklistEvent event,
+    Emitter<ChecklistState> emit,
+  ) async {
+    final activeChecklists = [...state.activeChecklists];
+    final ids = activeChecklists.map((checklist) => checklist.id).toList();
+    ids.addAll(state.activeChecklists.map((checklist) => checklist.id).toList().toList());
+    final newChecklist = event.checklist.copyWith(id: _getNextAvailableId(ids));
+    activeChecklists.insert(0, newChecklist);
+    emit(state.copyWith(activeChecklists: activeChecklists));
+  }
+
   void _handleSaveChecklistEvent(SaveChecklistEvent event, Emitter<ChecklistState> emit) async {
     final activeChecklists = [...state.activeChecklists];
     final ids = activeChecklists.map((checklist) => checklist.id).toList();
@@ -80,19 +114,28 @@ class ChecklistBloc extends Bloc<ChecklistEvent, ChecklistState> {
     activeChecklists.insert(0, newChecklist);
     emit(state.copyWith(activeChecklists: activeChecklists));
   }
+
   void _handleUpdateCheckboxsEvent(UpdateCheckboxsEvent event, Emitter<ChecklistState> emit) async {
     final activeChecklists = [...state.activeChecklists];
 
-    ChecklistViewModel checklistUpdated = activeChecklists.where((checklist) => checklist.id == event.checklistId).first;
-    final completedItems =  event.items.where((item) {
-     return  item.isCompleted == true;
-    } ).toList();
-    final completedPercentage = completedItems.length.toDouble() / event.items.length.toDouble() * 100;
+    ChecklistViewModel checklistUpdated = activeChecklists
+        .where((checklist) => checklist.id == event.checklistId)
+        .first;
+    final completedItems = event.items.where((item) {
+      return item.isCompleted == true;
+    }).toList();
+    final completedPercentage =
+        completedItems.length.toDouble() / event.items.length.toDouble() * 100;
     final isCompleted = completedItems.length == event.items.length;
-    checklistUpdated = checklistUpdated.copyWith(items: event.items, completedPercentage: completedPercentage, isCompleted: isCompleted, completedDate: isCompleted ? DateTime.now() : null);
+    checklistUpdated = checklistUpdated.copyWith(
+      items: event.items,
+      completedPercentage: completedPercentage,
+      isCompleted: isCompleted,
+      completedDate: isCompleted ? DateTime.now() : null,
+    );
     final updatedList = activeChecklists.map((checklist) {
       if (checklist.id == checklistUpdated.id) {
-          return checklistUpdated;
+        return checklistUpdated;
       }
       return checklist;
     }).toList();

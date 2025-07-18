@@ -5,11 +5,13 @@ import 'package:equatable/equatable.dart';
 class ChecklistState extends Equatable {
   final List<ChecklistViewModel> activeChecklists;
   final List<ChecklistViewModel> archivedChecklists;
+  final List<ChecklistViewModel> templates;
   final LoadState loadState;
   final String errorMsg;
   const ChecklistState({
     required this.activeChecklists,
     required this.archivedChecklists,
+    required this.templates,
     required this.loadState,
     required this.errorMsg,
   });
@@ -20,6 +22,7 @@ class ChecklistState extends Equatable {
     List<ChecklistViewModel>? archivedChecklists,
     LoadState? loadState,
     String? errorMsg,
+    List<ChecklistViewModel>? templates,
     }
   ) {
     return ChecklistState(
@@ -28,9 +31,10 @@ class ChecklistState extends Equatable {
       archivedChecklists: archivedChecklists ?? this.archivedChecklists,
       loadState: loadState ?? this.loadState,
       errorMsg: errorMsg ?? this.errorMsg,
+      templates: templates ?? this.templates,
     );
   }
 
   @override
-  List<Object> get props => [activeChecklists, archivedChecklists, loadState, errorMsg];
+  List<Object> get props => [activeChecklists, archivedChecklists, loadState, errorMsg, templates];
 }

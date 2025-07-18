@@ -47,7 +47,7 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
                 ),
                 MainMenuCard(
                   cardName: 'Templates',
-                  onCardTap: () {},
+                  onCardTap: () => context.router.push(ChecklistTemplatesRoute()),
                   iconAssetLocalPath: 'assets/images/template.png',
                 ),
                 MainMenuCard(
@@ -87,7 +87,7 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
                   itemImageAssets: 'assets/images/checklist.png',
                 ),
                 MainMenuBottomNavItem(
-                  onItemTap: () {},
+                  onItemTap: () => context.router.push(ChecklistTemplatesRoute()),
                   itemName: 'Templates',
                   itemImageAssets: 'assets/images/template.png',
                 ),

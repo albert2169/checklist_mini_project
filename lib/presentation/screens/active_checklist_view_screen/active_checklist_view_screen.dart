@@ -92,6 +92,7 @@ class _ActiveChecklistViewScreen extends State<ActiveChecklistViewScreen> {
                   name: 'Save',
                   onTap: () {
                       context.read<ChecklistBloc>().add(UpdateCheckboxsEvent(items: _items, checklistId: widget.checklist.id));
+                      context.router.pop();
                   },
                   height: 43,
                 ),

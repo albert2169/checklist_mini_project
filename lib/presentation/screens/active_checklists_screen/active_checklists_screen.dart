@@ -68,6 +68,7 @@ class _ActiveChecklistsScreenState extends State<ActiveChecklistsScreen> {
                         itemCount: activeChecklists.length,
                         itemBuilder: (_, index) {
                           return ChecklistCard(
+                            dateText: 'Created',
                             checklist: activeChecklists[index],
                           );
                         },
@@ -86,7 +87,11 @@ class _ActiveChecklistsScreenState extends State<ActiveChecklistsScreen> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            CustomButton(onTap: () => context.router.push(CreateNewChecklistRoute()), name: 'New\nChecklist', height: 62),
+            CustomButton(
+              onTap: () => context.router.push(CreateNewChecklistRoute(isForCustomTemplate: false)),
+              name: 'New\nChecklist',
+              height: 62,
+            ),
             CustomButton(
               height: 62,
               onTap: () {
@@ -94,7 +99,11 @@ class _ActiveChecklistsScreenState extends State<ActiveChecklistsScreen> {
               },
               name: 'Archive',
             ),
-            CustomButton(onTap: () {}, name: 'Templates', height: 62),
+            CustomButton(
+              onTap: () => context.router.push(ChecklistTemplatesRoute()),
+              name: 'Templates',
+              height: 62,
+            ),
             CustomButton(onTap: () {}, name: 'Settings', height: 62),
           ],
         ),

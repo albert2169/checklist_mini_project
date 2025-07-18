@@ -13,13 +13,17 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ChecklistCard extends StatelessWidget {
   final ChecklistViewModel checklist;
+  final String dateText;
 
-  const ChecklistCard({super.key, required this.checklist});
+  const ChecklistCard({super.key, required this.checklist, required this.dateText});
 
   @override
   Widget build(BuildContext context) {
     final colors = ChecklistColorTheme.of(context);
-    const borderWidth = 0.5;
+
+    const borderWidth = 2.0;
+    const borderRadius = 12.0;
+    const cardHeight = 74.0;
     const gradientColors = [
       Color(0xFFE8D228),
       Color(0xFF822D16),
@@ -29,15 +33,24 @@ class ChecklistCard extends StatelessWidget {
 
     return Padding(
       padding: const EdgeInsets.only(bottom: 12),
-      child: Stack(
-        children: [
-          CustomPaint(
-            painter: GradientBorderCardPainter(
-              borderWidth: borderWidth,
-              gradientColors: gradientColors,
+      child: SizedBox(
+        height: cardHeight + borderWidth * 2, 
+        child: Stack(
+          children: [
+            Positioned.fill(
+              child: CustomPaint(
+                painter: GradientBorderCardPainter(
+                  borderWidth: borderWidth,
+                  gradientColors: gradientColors,
+                ),
+              ),
             ),
-            child: Container(
-              height: 74,
+            Container(
+              margin: const EdgeInsets.all(borderWidth),
+              decoration: BoxDecoration(
+                color: colors.backgroundSecondary,
+                borderRadius: BorderRadius.circular(borderRadius),
+              ),
               padding: const EdgeInsets.all(16),
               child: GestureDetector(
                 onTap: () => context.router.push(ActiveChecklistViewRoute(checklist: checklist)),
@@ -61,26 +74,28 @@ class ChecklistCard extends StatelessWidget {
                                     fontSize: 15,
                                   ),
                                 ),
-                             !checklist.isCompleted ?  Row(
-                                  children: [
-                                    const SizedBox(width: 15),
-                                    GradientTextWidget(
-                                      onTap: () {
-                                        context.read<ChecklistBloc>().add(
-                                          AddActiveChecklistToArchive(id: checklist.id),
-                                        );
-                                      },
-                                      text: 'Archive',
-                                    ),
-                                  ],
-                                ) : const SizedBox.shrink(),
+                                checklist.isCompleted
+                                    ? Row(
+                                        children: [
+                                          const SizedBox(width: 15),
+                                          GradientTextWidget(
+                                            onTap: () {
+                                              context.read<ChecklistBloc>().add(
+                                                AddActiveChecklistToArchive(id: checklist.id),
+                                              );
+                                            },
+                                            text: 'Archive',
+                                          ),
+                                        ],
+                                      )
+                                    : const SizedBox.shrink(),
                               ],
                             ),
                             const SizedBox(height: 5),
-
                             SizedBox(
                               width: 220,
                               child: CreatedDateAndPercentage(
+                                dateText: dateText,
                                 createdAt: checklist.createdAt,
                                 percentagePassed: checklist.completedPercentage,
                               ),
@@ -94,8 +109,8 @@ class ChecklistCard extends StatelessWidget {
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

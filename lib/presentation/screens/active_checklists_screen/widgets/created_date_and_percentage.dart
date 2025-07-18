@@ -5,11 +5,13 @@ import 'package:intl/intl.dart';
 class CreatedDateAndPercentage extends StatelessWidget {
   final DateTime createdAt;
   final double percentagePassed;
+  final String dateText;
 
   const CreatedDateAndPercentage({
     super.key,
     required this.createdAt,
     required this.percentagePassed,
+    required this.dateText,
   });
 
   @override
@@ -21,7 +23,7 @@ class CreatedDateAndPercentage extends StatelessWidget {
 return Row(
   children: [
     Text(
-      'Created: $formattedDate',
+      '$dateText: $formattedDate',
       style:  TextStyle(
         fontSize: 13,
         fontWeight: FontWeight.w500,

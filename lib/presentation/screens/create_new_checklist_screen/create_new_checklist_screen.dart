@@ -16,7 +16,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 @RoutePage()
 class CreateNewChecklistScreen extends StatefulWidget {
-  const CreateNewChecklistScreen({super.key});
+  final bool isForCustomTemplate;
+  const CreateNewChecklistScreen({super.key, required this.isForCustomTemplate});
 
   @override
   State<CreateNewChecklistScreen> createState() => _CreateNewChecklistScreenState();
@@ -38,8 +39,6 @@ class _CreateNewChecklistScreenState extends State<CreateNewChecklistScreen> {
     final colors = ChecklistColorTheme.of(context);
 
     return GestureDetector(
-      behavior: HitTestBehavior.translucent,
-
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
         backgroundColor: colors.backgroundPrimary,
@@ -50,7 +49,10 @@ class _CreateNewChecklistScreenState extends State<CreateNewChecklistScreen> {
             onTap: () => context.router.pop(),
             child: Image.asset('assets/images/app_bar_arrow_back.png'),
           ),
-          title: Text('Create New Checklist', style: TextStyle(color: colors.primary)),
+          title: Text(
+            widget.isForCustomTemplate ? 'Create Custom Template' : 'Create New Checklist',
+            style: TextStyle(color: colors.primary),
+          ),
           elevation: 0,
           surfaceTintColor: Colors.transparent,
           backgroundColor: colors.backgroundPrimary,
@@ -150,6 +152,23 @@ class _CreateNewChecklistScreenState extends State<CreateNewChecklistScreen> {
                       return;
                     }
                     _checklistItems.removeLast();
+                    if (widget.isForCustomTemplate) {
+                      context.read<ChecklistBloc>().add(
+                        CustomizeChecklistTemplateEvent(
+                          checklist: ChecklistViewModel(
+                            name: _checkListNameTextEditingController.text,
+                            items: _checklistItems,
+                            completedDate: null,
+                            createdAt: DateTime.now(),
+                            completedPercentage: 0,
+                            id: 0,
+                            isCompleted: false,
+                          ),
+                        ),
+                      );
+                      context.router.pop();
+                      return;
+                    }
                     context.read<ChecklistBloc>().add(
                       SaveChecklistEvent(
                         checklist: ChecklistViewModel(
